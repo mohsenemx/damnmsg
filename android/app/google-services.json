@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1076171840551",
+    "project_id": "damnmsg",
+    "storage_bucket": "damnmsg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076171840551:android:ab35b4427b610e2f34c202",
+        "android_client_info": {
+          "package_name": "com.example.damnmsg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076171840551-tkuqtr4h2ef4d9bji87bs27rr4nmqhic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiRM5gP4LBZBwgv3spjhAS-INuJ3rslTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076171840551-tkuqtr4h2ef4d9bji87bs27rr4nmqhic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
