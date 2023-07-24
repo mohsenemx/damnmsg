@@ -12,7 +12,7 @@ class GenericButton extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
           color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.circular(8))),
+          borderRadius: BorderRadius.all(Radius.circular(12))),
       child: GestureDetector(
         onTap: onTap,
         child: Padding(
