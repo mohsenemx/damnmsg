@@ -1,13 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-  void SignUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
+  void SignUserOut() {}
 
   @override
   Widget build(BuildContext context) {

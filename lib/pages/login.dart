@@ -1,10 +1,10 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, non_constant_identifier_names
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, non_constant_identifier_names, cancel_subscriptions
 import 'package:damnmsg/components/Buttons.dart';
 import 'package:damnmsg/components/ImgButton.dart';
 import 'package:damnmsg/components/TextBox.dart';
 import 'package:damnmsg/pages/register.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,27 +19,31 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void LoginEmailPassowrd(
       {required String email, required String password}) async {
-    try {
-      showDialog(
-        context: context,
-        builder: ((context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }),
-      );
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      print('Signed In!');
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      if (e.code == 'user-not-found') {
-        print('Wrong username');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password');
+    final supabase = Supabase.instance.client;
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }),
+    );
+
+    final AuthResponse res = await supabase.auth.signInWithPassword(
+      email: 'example@email.com',
+      password: 'example-password',
+    );
+    final Session? session = res.session;
+    final User? user = supabase.auth.currentUser;
+    final authSubscription = supabase.auth.onAuthStateChange.listen((data) {
+      final AuthChangeEvent event = data.event;
+      if (event == AuthChangeEvent.signedIn) {
+        // handle signIn
+        print('Signed In!');
       }
-    }
+    });
+
+    Navigator.pop(context);
   }
 
   @override
