@@ -1,4 +1,4 @@
-package com.example.damnmsg
+package com.emx.damnmsg
 
 import io.flutter.embedding.android.FlutterActivity
 

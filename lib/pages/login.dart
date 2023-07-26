@@ -28,12 +28,15 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }),
     );
-
-    final AuthResponse res = await supabase.auth.signInWithPassword(
-      email: 'example@email.com',
-      password: 'example-password',
-    );
-    final Session? session = res.session;
+    try {
+      final AuthResponse res = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+    } on AuthException catch (e) {
+      print(e.message);
+    }
+    // final Session? session = res.session;
     final User? user = supabase.auth.currentUser;
     final authSubscription = supabase.auth.onAuthStateChange.listen((data) {
       final AuthChangeEvent event = data.event;
