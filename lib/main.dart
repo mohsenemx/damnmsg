@@ -4,13 +4,18 @@ import 'package:damnmsg/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/*
+ * Remember to change your keys accordingly, this file is not provided by default as it contains sensitive information.
+ * You can also use ./secrets_template.dart
+ */
+import './secrets.dart';
+
 // RoL = Login or Register
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
-    url: 'https://hkcgfpaobzhavyqkdlqz.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrY2dmcGFvYnpoYXZ5cWtkbHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTAzMDE3NDAsImV4cCI6MjAwNTg3Nzc0MH0.nMY6hpTIZq7DNpRmoSaPThXG5sGRpv20VYC9pKt_7sM',
+    url: authUrl,
+    anonKey: authKey,
   );
   runApp(TheApp());
 }
