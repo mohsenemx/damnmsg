@@ -1,10 +1,12 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, unused_local_variable
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, unused_local_variable, unused_import
 
 // Importing local files
 import 'package:damnmsg/components/Buttons.dart';
 import 'package:damnmsg/components/TextBox.dart';
+import 'package:damnmsg/pages/home.dart'; //wtf?
 import 'package:damnmsg/pages/login.dart';
 import 'package:damnmsg/components/popup.dart';
+import 'package:damnmsg/services/auth.dart';
 
 // Importing dependencies
 import 'package:flutter/material.dart';
@@ -19,19 +21,36 @@ class RegisterScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<RegisterScreen> {
   final supabase = Supabase.instance.client;
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-
   void SignUpUser(email, username, password) async {
-    final AuthResponse res = await supabase.auth.signUp(
-      email: email,
-      password: password,
-      data: {'username': username},
-    );
-    final Session? session = res.session;
-    final User? user = res.user;
+    bool success = false;
+    try {
+      final AuthResponse res = await supabase.auth.signUp(
+        email: email,
+        password: password,
+        data: {'username': username},
+      );
+      final Session? session = res.session;
+      final User? user = res.user;
+      if (session != null && user != null) {
+        success = true;
+      }
+    } on AuthException catch (err) {
+      success = false;
+      print(err.message);
+    }
+    if (success) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AuthPage(),
+        ),
+      );
+    }
   }
 
   @override
@@ -56,6 +75,14 @@ class _LoginScreenState extends State<RegisterScreen> {
                     ),
                     SizedBox(
                       height: 55,
+                    ),
+                    InputBox(
+                      controller: usernameController,
+                      hintText: 'Username',
+                      obscureText: false,
+                    ),
+                    SizedBox(
+                      height: 25,
                     ),
                     Hero(
                       tag: 'emailField',
@@ -95,16 +122,8 @@ class _LoginScreenState extends State<RegisterScreen> {
                         if (confirmPasswordController.text.trim() == '') {}
                         if (passwordController.text !=
                             confirmPasswordController.text) {}
-                        String extraInfo =
-                            'You have to chose a unique username that others will use to find you.';
-                        String username = GenericInputPopUp(
-                            context: context,
-                            title: 'Choose a username',
-                            extraInfo: extraInfo,
-                            inputHint: 'Enter a username',
-                            inputTitle: 'Username');
-                        SignUpUser(emailController.text, username,
-                            passwordController.text);
+                        SignUpUser(emailController.text,
+                            usernameController.text, passwordController.text);
                       },
                     ),
                     SizedBox(
